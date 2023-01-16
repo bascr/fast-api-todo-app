@@ -1,10 +1,12 @@
 from typing import Optional
-from fastapi import Depends, HTTPException, APIRouter
+from fastapi import Depends, HTTPException, APIRouter, Request
 from database import db_models_create_all, get_db
 from sqlalchemy.orm import Session
 from pydantic import BaseModel, Field
 from routers.auth import get_current_user, get_user_exception
 from utils.common_responses import successful_response
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
 import models
 
 router = APIRouter(
@@ -19,6 +21,7 @@ router = APIRouter(
 
 
 db_models_create_all()
+templates = Jinja2Templates(directory="templates")
 
 
 class Todo(BaseModel):
@@ -26,6 +29,11 @@ class Todo(BaseModel):
     description: Optional[str]
     priority: int = Field(gt=0, lt=6, description="Th priority must be between 1-5")
     complete: bool
+
+
+@router.get("/test")
+async def test(request: Request):
+    return templates.TemplateResponse(name="home.html", context={"request": request})
 
 
 @router.get("/")
