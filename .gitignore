@@ -1,0 +1,17 @@
+# IDE metadata
+.idea
+
+# Metadata
+__pycache__
+
+# Virtual environment
+venv
+
+# Environment files
+.env
+
+# SQLITE db
+todos.db
+
+# Backups
+psql/backup*.sql
